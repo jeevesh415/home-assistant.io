@@ -1,4 +1,8 @@
-@charset "UTF-8";
+@use 'variables' as *;
+@use 'mixins' as *;
+@use '../inuitcss/defaults' as *;
+@use '../inuitcss/generic/mixins' as *;
+@use "sass:color";
 
 h1.title.indent {
   font-size: 3.5rem;
@@ -423,13 +427,20 @@ ul#toc {
     display: inline-block;
   }
 
-  #integration-sidebar #toc-module {
+  #integration-sidebar #toc-module,
+  #integration-sidebar #learn-more-module {
     display: none;
   }
 
   .documentation-page #sidebar #toc-module {
     background: none;
     padding: 0;
+  }
+}
+
+@media only screen and (max-width: $desk-wide-start) {
+  #toc-bar-learn-more {
+    display: none;
   }
 }
 
@@ -553,12 +564,16 @@ dd {
 header .breadcrumbs {
   color: $grayLight;
   font-size: .9rem;
-  padding-bottom: 24px;
+  padding-bottom: 12px;
 
   a {
     color: $grayLight;
     text-decoration: none !important;
-    font-weight: 600;
+    transition: 0.3s color ease-in-out;
+
+    &:hover {
+      color: $blueDark;
+    }
   }
 }
 
@@ -957,7 +972,7 @@ a.material-card:hover {
     }
 
     &:hover {
-      background-color: lighten(#038fc7, 10%);
+      background-color: color.adjust(#038fc7, $lightness: 10%);
     }
 
     iconify-icon {
@@ -1093,6 +1108,18 @@ a.material-card:hover {
       display: flex;
       align-items: center;
       gap: 12px;
+      transform: translateY(0);
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition: transform 0.4s ease-out;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+      &--visible {
+        transform: translateY(0);
+      }
 
       div {
         flex-grow: 1;
@@ -1130,7 +1157,18 @@ a.material-card:hover {
         display: block;
         width: 44px;
         height: 32px;
+        background-size: contain;
+        background-repeat: no-repeat;
         align-self: flex-end;
+
+        @media only screen and (max-width: $palm-end) {
+          width: 37px;
+          height: 27px;
+        }
+      }
+
+      @media only screen and (max-width: $palm-end) {
+        padding: 10px 12px;
       }
 
     }
@@ -1932,7 +1970,7 @@ pre[class*="language-"]:after {
   #not_found {
     .page {
       text-align: center;
-      margin-bottom: 300px;
+      margin-bottom: 10px;
 
       .search404-container {
         margin-bottom: 32px;
@@ -1943,12 +1981,6 @@ pre[class*="language-"]:after {
           justify-self: center;
         }
       }
-    }
-
-    footer {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
     }
   }
 }
